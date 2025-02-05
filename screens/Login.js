@@ -1,139 +1,94 @@
-import React from 'react';
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, ImageBackground, TextInput, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, TextInput, TouchableOpacity, ActivityIndicator, StyleSheet } from 'react-native';
+import useAuth from '../hooks/useAuth';
 
-export default function LoginScreen (){
+export default function LoginScreen({ navigation }) {
+  const { user, loading, error, login } = useAuth();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleLogin = () => {
+    login(email, password, () => {
+      navigation.navigate('PedidosScreen'); // Redirige a la pantalla del mapa tras un login exitoso
+    });
+  };
+
   return (
-    <ImageBackground 
-      source={require('../assets/imagenes/logoGuaymallen_extended.jpg')} // Imagen local
-      style={styles.background}
-      blurRadius={2} // Ajusta el nivel de desenfoque
-      imageStyle={styles.imagePosition} // Aplicar zoom a la imagen
-    >
-      <View style={styles.overlayContainer}>
+    <View style={styles.container}>
+      <Text style={styles.title}>Iniciar Sesión</Text>
 
-        {/* Formulario de login */}
-        <View style={styles.loginContainer}>
-          <Text style={styles.title}>¡Bienvenido!</Text>
-          <Text style={styles.subtitle}>Inicia sesión para continuar</Text>
-          
-          {/* Campo de Usuario */}
-          <TextInput
-            style={styles.input}
-            placeholder="Email"
-            placeholderTextColor="#ccc"
-            autoCapitalize="none"
-            keyboardType="email-address"
-          />
+      {error && <Text style={styles.error}>{error}</Text>}
 
-          {/* Campo de Contraseña */}
-          <TextInput
-            style={styles.input}
-            placeholder="Contraseña"
-            placeholderTextColor="#ccc"
-            secureTextEntry={true}
-          />
+      <TextInput
+        style={styles.input}
+        placeholder="Correo electrónico"
+        value={email}
+        onChangeText={(text) => {
+          setEmail(text);
+          if (error) setError(null); // Limpia el error al escribir
+        }}
+        autoCapitalize="none"
+        keyboardType="email-address"
+      />
 
-          {/* Botón de Login */}
-          <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText}>Iniciar Sesión</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
+      <TextInput
+        style={styles.input}
+        placeholder="Contraseña"
+        value={password}
+        onChangeText={(text) => {
+          setPassword(text);
+          if (error) setError(null); // Limpia el error al escribir
+        }}
+        secureTextEntry
+      />
 
-      <StatusBar style="auto" />
-    </ImageBackground>
+      {loading ? (
+        <ActivityIndicator size="large" color="#6a1b9a" />
+      ) : (
+        <TouchableOpacity style={styles.button} onPress={handleLogin}>
+          <Text style={styles.buttonText}>Ingresar</Text>
+        </TouchableOpacity>
+      )}
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  background: {
+  container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  imagePosition: {
-    transform: [
-      { scale: 1.40 }, // Aplicar zoom
-      { translateY: -120 }, // Mover imagen hacia arriba
-    ],
-  },
-  overlayContainer: {
-    flex: 1,
-    width: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(128, 0, 128, 0.5)', // Fondo translúcido
-  },
-  headerContainer: {
-    alignItems: 'center',
-    marginBottom: 50, // Separación entre el encabezado y el formulario
-  },
-  loginContainer: {
-    transform: [
-      { scale: 1 }, // Aplicar zoom
-      { translateY: 100 }, // Mover imagen hacia arriba
-    ],
-    width: '90%', // Ajustar el ancho del formulario
-    backgroundColor: 'rgba(255, 255, 255, 0.9)', // Fondo blanco translúcido
     padding: 20,
-    borderRadius: 10,
-    shadowColor: '#000',
-    shadowOpacity: 0.1,
-    shadowOffset: { width: 0, height: 3 },
-    shadowRadius: 4,
-    elevation: 5,
-  },
-  text: {
-    color: '#fff',
-    fontSize: 18,
-    fontWeight: 'bold',
-    textAlign: 'center',
+    backgroundColor: '#f5f5f5',
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#333',
-    marginBottom: 10,
-    textAlign: 'center',
-  },
-  subtitle: {
-    fontSize: 16,
-    color: '#666',
     marginBottom: 20,
-    textAlign: 'center',
   },
   input: {
     width: '100%',
-    height: 50,
-    backgroundColor: '#fff',
+    padding: 15,
+    borderWidth: 1,
+    borderColor: '#ccc',
     borderRadius: 8,
-    paddingHorizontal: 16,
-    fontSize: 16,
-    color: '#333',
-    marginBottom: 20,
-    shadowColor: '#000',
-    shadowOpacity: 0.1,
-    shadowOffset: { width: 0, height: 3 },
-    shadowRadius: 4,
-    elevation: 2,
+    marginBottom: 15,
+    backgroundColor: '#fff',
   },
   button: {
-    width: '100%',
-    height: 50,
     backgroundColor: '#6a1b9a',
+    padding: 15,
     borderRadius: 8,
-    justifyContent: 'center',
     alignItems: 'center',
-    shadowColor: '#000',
-    shadowOpacity: 0.2,
-    shadowOffset: { width: 0, height: 3 },
-    shadowRadius: 4,
-    elevation: 5,
+    width: '100%',
   },
   buttonText: {
     color: '#fff',
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: 'bold',
+  },
+  error: {
+    color: 'red',
+    marginBottom: 10,
   },
 });

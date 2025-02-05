@@ -22,7 +22,59 @@ export default function InicioScreen({ navigation }) {
       >
         <Text style={styles.buttonText}>Registrarme</Text>
       </TouchableOpacity>
+
+    {/* Botón Mapas */}
+      <TouchableOpacity 
+          style={styles.button} 
+          onPress={() => navigation.navigate('Mapa')} // Cambia 'Mapa' por el nombre de otra pantalla
+        >
+          <Text style={styles.buttonText}>Abrir Mapa</Text>
+      </TouchableOpacity>
+
+    {/* Botón Registro */}
+      <TouchableOpacity 
+          style={styles.button} 
+          onPress={() => navigation.navigate('Registro')} // Cambia 'Mapa' por el nombre de otra pantalla
+        >
+          <Text style={styles.buttonText}>Registro</Text>
+      </TouchableOpacity>
+
+    {/* Botón Movilidades */}
+      <TouchableOpacity 
+          style={styles.button} 
+          onPress={() => navigation.navigate('Movilidades')} // Cambia 'Mapa' por el nombre de otra pantalla
+        >
+          <Text style={styles.buttonText}>Movilidades</Text>
+      </TouchableOpacity>
+
+    {/* Botón Pedidos */}
+    <TouchableOpacity 
+          style={styles.button} 
+          onPress={() => navigation.navigate('PedidosScreen')} // Cambia 'Pedidos' por el nombre de otra pantalla
+        >
+          <Text style={styles.buttonText}>Pedidos</Text>
+      </TouchableOpacity> 
+
+    {/* Botón Areas */}
+    <TouchableOpacity 
+          style={styles.button} 
+          onPress={() => navigation.navigate('Areas')} // Cambia 'Áreas' por el nombre de otra pantalla
+        >
+          <Text style={styles.buttonText}>Areas</Text>
+      </TouchableOpacity>  
+
+    {/* Botón Usuarios */}
+    <TouchableOpacity 
+          style={styles.button} 
+          onPress={() => navigation.navigate('Usuarios')} // Cambia 'Usuarios' por el nombre de otra pantalla
+        >
+          <Text style={styles.buttonText}>Usuarios</Text>
+      </TouchableOpacity>  
+      
+    
     </View>
+    
+
   );
 }
 
